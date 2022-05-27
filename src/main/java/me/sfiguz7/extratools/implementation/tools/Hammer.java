@@ -1,10 +1,11 @@
 package me.sfiguz7.extratools.implementation.tools;
 
-import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ToolUseHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
-import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
+import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
+import io.github.thebusybiscuit.slimefun4.implementation.setup.SlimefunItemSetup;
+import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.sfiguz7.extratools.lists.ETItems;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -13,7 +14,7 @@ import org.bukkit.inventory.ItemStack;
 public class Hammer extends SimpleSlimefunItem<ToolUseHandler> {
 
     public Hammer() {
-        super(ETItems.extra_tools, ETItems.HAMMER, RecipeType.MAGIC_WORKBENCH,
+        super(SlimefunItemSetup.categories.tools, ETItems.HAMMER, RecipeType.MAGIC_WORKBENCH,
             new ItemStack[] {new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT),
                 new ItemStack(Material.IRON_INGOT),
                 new ItemStack(Material.IRON_INGOT), new ItemStack(Material.STICK), new ItemStack(Material.IRON_INGOT),
@@ -23,7 +24,7 @@ public class Hammer extends SimpleSlimefunItem<ToolUseHandler> {
     @Override
     public ToolUseHandler getItemHandler() {
         return (e, tool, fortune, drops) -> {
-            if (Slimefun.getPermissionsService().hasPermission(e.getPlayer(), Hammer.this)) {
+            if (SlimefunPlugin.getPermissionsService().hasPermission(e.getPlayer(), Hammer.this)) {
 
                 Block b = e.getBlock();
                 ItemStack drop = getDrop(b);
