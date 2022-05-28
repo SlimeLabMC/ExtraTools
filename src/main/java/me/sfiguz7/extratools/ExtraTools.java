@@ -58,7 +58,7 @@ public class ExtraTools extends JavaPlugin implements SlimefunAddon {
 
         }.register(this);
         new Research(new NamespacedKey(this, "ELECTRIC_COMPOSTER"),
-            ++researchId, "電力堆肥機", 18)
+            ++researchId, "電力攪拌機", 18)
             .addItems(ETItems.ELECTRIC_COMPOSTER).register();
 
         new ElectricComposter(ElectricComposter.Tier.TWO) {
@@ -75,13 +75,56 @@ public class ExtraTools extends JavaPlugin implements SlimefunAddon {
 
         }.register(this);
         new Research(new NamespacedKey(this, "ELECTRIC_COMPOSTER_2"),
-            ++researchId, "電力堆肥機 II", 18)
+            ++researchId, "電力攪拌機 II", 18)
             .addItems(ETItems.ELECTRIC_COMPOSTER_2).register();
 
-        new CobblestoneGenerator().register(this);
+        new CobblestoneGenerator(CobblestoneGenerator.Tier.ONE) {
+            @Override
+            public int getEnergyConsumption() {
+                return 50;
+            }
+
+            @Override
+            public int getCapacity() {
+                return 256;
+            }
+
+        }.register(this);
         new Research(new NamespacedKey(this, "COBBLESTONE_GENERATOR"),
-            ++researchId, "鵝卵石生成器", 40)
+            ++researchId, "鵝卵石生成器", 30)
             .addItems(ETItems.COBBLESTONE_GENERATOR).register();
+
+        new CobblestoneGenerator(CobblestoneGenerator.Tier.TWO) {
+            @Override
+            public int getEnergyConsumption() {
+                return 108;
+            }
+
+            @Override
+            public int getCapacity() {
+                return 512;
+            }
+
+        }.register(this);
+        new Research(new NamespacedKey(this, "COBBLESTONE_GENERATOR_2"),
+                ++researchId, "鵝卵石生成器 II", 40)
+                .addItems(ETItems.COBBLESTONE_GENERATOR_2).register();
+
+        new CobblestoneGenerator(CobblestoneGenerator.Tier.THREE) {
+            @Override
+            public int getEnergyConsumption() {
+                return 240;
+            }
+
+            @Override
+            public int getCapacity() {
+                return 1024;
+            }
+
+        }.register(this);
+        new Research(new NamespacedKey(this, "COBBLESTONE_GENERATOR_3"),
+                ++researchId, "鵝卵石生成器 III", 60)
+                .addItems(ETItems.COBBLESTONE_GENERATOR_3).register();
 
         new Vaporizer().register(this);
         new Research(new NamespacedKey(this, "VAPORIZER"),

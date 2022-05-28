@@ -4,6 +4,7 @@ import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetComponent;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
 import io.github.thebusybiscuit.slimefun4.core.networks.energy.EnergyNetComponentType;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
+import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
@@ -27,22 +28,15 @@ import org.bukkit.inventory.ItemStack;
 public class CobblestoneGenerator extends SimpleSlimefunItem<BlockTicker> implements ETInventoryBlock,
     EnergyNetComponent {
 
-    private static final int ENERGY_CONSUMPTION = 32;
-    private final int[] border = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 18, 19, 20, 21, 22, 27, 28, 29, 30,
+    private final int speed;
+    private final int[] border = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 18, 19, 21, 22, 27, 28, 30,
         31, 36, 37, 38, 39, 40, 41, 42, 43, 44, 22};
     private final int[] inputBorder = {};
     private final int[] outputBorder = {14, 15, 16, 17, 23, 26, 32, 33, 34, 35};
-    private int decrement = 2;
 
-    public CobblestoneGenerator() {
-        super(ETItems.extra_tools, ETItems.COBBLESTONE_GENERATOR, RecipeType.ENHANCED_CRAFTING_TABLE,
-            new ItemStack[] {SlimefunItems.PROGRAMMABLE_ANDROID_MINER, SlimefunItems.MAGNESIUM_INGOT,
-                SlimefunItems.PROGRAMMABLE_ANDROID_MINER,
-                new ItemStack(Material.WATER_BUCKET), SlimefunItems.BLISTERING_INGOT_3,
-                new ItemStack(Material.LAVA_BUCKET),
-                SlimefunItems.PROGRAMMABLE_ANDROID_MINER, SlimefunItems.BIG_CAPACITOR,
-                SlimefunItems.PROGRAMMABLE_ANDROID_MINER});
-
+    public CobblestoneGenerator(Tier tier) {
+        super(ETItems.extra_tools, tier == Tier.ONE ? ETItems.COBBLESTONE_GENERATOR : (tier == Tier.TWO ? ETItems.COBBLESTONE_GENERATOR_2 : ETItems.COBBLESTONE_GENERATOR_3), RecipeType.ENHANCED_CRAFTING_TABLE, tier.recipe);
+        this.speed = tier.speed;
         createPreset(this, this::constructMenu);
 
         addItemHandler(onBreak());
@@ -61,6 +55,13 @@ public class CobblestoneGenerator extends SimpleSlimefunItem<BlockTicker> implem
             preset.addItem(i, new CustomItem(new ItemStack(Material.ORANGE_STAINED_GLASS_PANE), " "),
                 ChestMenuUtils.getEmptyClickHandler());
         }
+
+        preset.addItem(11, new CustomItem(new ItemStack(Material.LAVA_BUCKET), " "),
+                ChestMenuUtils.getEmptyClickHandler());
+        preset.addItem(20, new CustomItem(new ItemStack(Material.COBBLESTONE), " "),
+                ChestMenuUtils.getEmptyClickHandler());
+        preset.addItem(29, new CustomItem(new ItemStack(Material.WATER_BUCKET), " "),
+                ChestMenuUtils.getEmptyClickHandler());
 
         for (int i : getOutputSlots()) {
             preset.addMenuClickHandler(i, new ChestMenu.AdvancedMenuClickHandler() {
@@ -99,6 +100,10 @@ public class CobblestoneGenerator extends SimpleSlimefunItem<BlockTicker> implem
         return 512;
     }
 
+    public int getEnergyConsumption() {
+        return 50;
+    }
+
     public BlockBreakHandler onBreak() {
         return (e, item, fortune, drops) -> {
             Block b = e.getBlock();
@@ -115,39 +120,20 @@ public class CobblestoneGenerator extends SimpleSlimefunItem<BlockTicker> implem
     @Override
     public BlockTicker getItemHandler() {
         return new BlockTicker() {
-
-            @Override
-            // Fires first!! The method tick() fires after this
-            public void uniqueTick() {
-                // Needed to keep track of all cobble gens at once,
-                // All it does is set back to max (for now 2, will be customizable)
-                // when it reaches the lowest possible (AKA 1)
-                if (decrement == 1) {
-                    decrement = 2;
-                    return;
-                }
-                decrement--;
-
-            }
-
             @Override
             public void tick(Block b, SlimefunItem sf, Config data) {
-                // We only act once per decrement cycle, when decrement got to
-                // lowest and has been reset
-                if (decrement != 2) {
-                    return;
-                }
+                int spt = SlimefunPlugin.getTickerTask().getSPT();
 
-                ItemStack output = new ItemStack(Material.COBBLESTONE);
+                ItemStack output = new ItemStack(Material.COBBLESTONE, spt * speed);
 
-                if (getCharge(b.getLocation()) >= ENERGY_CONSUMPTION) {
+                if (getCharge(b.getLocation()) >= getEnergyConsumption() * spt) {
                     BlockMenu menu = BlockStorage.getInventory(b);
 
                     if (!menu.fits(output, getOutputSlots())) {
                         return;
                     }
 
-                    removeCharge(b.getLocation(), ENERGY_CONSUMPTION);
+                    removeCharge(b.getLocation(), getEnergyConsumption() * spt);
                     menu.pushItem(output, getOutputSlots());
                 }
             }
@@ -157,6 +143,38 @@ public class CobblestoneGenerator extends SimpleSlimefunItem<BlockTicker> implem
                 return true;
             }
         };
+    }
+
+    public enum Tier {
+        ONE(new ItemStack[] {SlimefunItems.PROGRAMMABLE_ANDROID_MINER, SlimefunItems.MAGNESIUM_INGOT,
+                        SlimefunItems.PROGRAMMABLE_ANDROID_MINER,
+                        new ItemStack(Material.WATER_BUCKET), SlimefunItems.BLISTERING_INGOT,
+                        new ItemStack(Material.LAVA_BUCKET),
+                        SlimefunItems.PROGRAMMABLE_ANDROID_MINER, SlimefunItems.MEDIUM_CAPACITOR,
+                        SlimefunItems.PROGRAMMABLE_ANDROID_MINER}, 1
+        ),
+        TWO(new ItemStack[] {ETItems.COBBLESTONE_GENERATOR, SlimefunItems.MAGNESIUM_INGOT,
+                ETItems.COBBLESTONE_GENERATOR,
+                new ItemStack(Material.WATER_BUCKET), SlimefunItems.BLISTERING_INGOT_2,
+                new ItemStack(Material.LAVA_BUCKET),
+                SlimefunItems.PROGRAMMABLE_ANDROID_MINER, SlimefunItems.BIG_CAPACITOR,
+                SlimefunItems.PROGRAMMABLE_ANDROID_MINER}, 2
+        ),
+        THREE(new ItemStack[] {ETItems.COBBLESTONE_GENERATOR_2, SlimefunItems.MAGNESIUM_INGOT,
+                ETItems.COBBLESTONE_GENERATOR_2,
+                new ItemStack(Material.WATER_BUCKET), SlimefunItems.BLISTERING_INGOT_3,
+                new ItemStack(Material.LAVA_BUCKET),
+                SlimefunItems.PROGRAMMABLE_ANDROID_MINER, SlimefunItems.LARGE_CAPACITOR,
+                SlimefunItems.PROGRAMMABLE_ANDROID_MINER}, 4
+        );
+
+        private final ItemStack[] recipe;
+        private final int speed;
+
+        Tier(ItemStack[] recipe, int speed) {
+            this.recipe = recipe;
+            this.speed = speed;
+        }
     }
 
 }

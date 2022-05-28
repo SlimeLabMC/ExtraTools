@@ -4,7 +4,6 @@ import io.github.thebusybiscuit.slimefun4.core.handlers.ToolUseHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
-import io.github.thebusybiscuit.slimefun4.implementation.setup.SlimefunItemSetup;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.sfiguz7.extratools.lists.ETItems;
 import org.bukkit.Material;
@@ -14,7 +13,7 @@ import org.bukkit.inventory.ItemStack;
 public class Hammer extends SimpleSlimefunItem<ToolUseHandler> {
 
     public Hammer() {
-        super(SlimefunItemSetup.categories.tools, ETItems.HAMMER, RecipeType.MAGIC_WORKBENCH,
+        super(ETItems.extra_tools, ETItems.HAMMER, RecipeType.MAGIC_WORKBENCH,
             new ItemStack[] {new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT),
                 new ItemStack(Material.IRON_INGOT),
                 new ItemStack(Material.IRON_INGOT), new ItemStack(Material.STICK), new ItemStack(Material.IRON_INGOT),
