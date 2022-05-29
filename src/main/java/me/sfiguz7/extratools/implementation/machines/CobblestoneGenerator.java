@@ -101,7 +101,7 @@ public class CobblestoneGenerator extends SimpleSlimefunItem<BlockTicker> implem
     }
 
     public int getEnergyConsumption() {
-        return 50;
+        return 60;
     }
 
     public BlockBreakHandler onBreak() {
@@ -157,15 +157,15 @@ public class CobblestoneGenerator extends SimpleSlimefunItem<BlockTicker> implem
                 ETItems.COBBLESTONE_GENERATOR,
                 new ItemStack(Material.WATER_BUCKET), SlimefunItems.BLISTERING_INGOT_2,
                 new ItemStack(Material.LAVA_BUCKET),
-                SlimefunItems.PROGRAMMABLE_ANDROID_MINER, SlimefunItems.BIG_CAPACITOR,
-                SlimefunItems.PROGRAMMABLE_ANDROID_MINER}, 2
+                null, SlimefunItems.BIG_CAPACITOR,
+                null}, 2
         ),
         THREE(new ItemStack[] {ETItems.COBBLESTONE_GENERATOR_2, SlimefunItems.MAGNESIUM_INGOT,
                 ETItems.COBBLESTONE_GENERATOR_2,
                 new ItemStack(Material.WATER_BUCKET), SlimefunItems.BLISTERING_INGOT_3,
                 new ItemStack(Material.LAVA_BUCKET),
-                SlimefunItems.PROGRAMMABLE_ANDROID_MINER, SlimefunItems.LARGE_CAPACITOR,
-                SlimefunItems.PROGRAMMABLE_ANDROID_MINER}, 4
+                null, SlimefunItems.LARGE_CAPACITOR,
+                null}, 4
         );
 
         private final ItemStack[] recipe;

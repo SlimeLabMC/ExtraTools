@@ -81,7 +81,7 @@ public class ExtraTools extends JavaPlugin implements SlimefunAddon {
         new CobblestoneGenerator(CobblestoneGenerator.Tier.ONE) {
             @Override
             public int getEnergyConsumption() {
-                return 50;
+                return 60;
             }
 
             @Override
@@ -97,7 +97,7 @@ public class ExtraTools extends JavaPlugin implements SlimefunAddon {
         new CobblestoneGenerator(CobblestoneGenerator.Tier.TWO) {
             @Override
             public int getEnergyConsumption() {
-                return 108;
+                return 100;
             }
 
             @Override
@@ -113,7 +113,7 @@ public class ExtraTools extends JavaPlugin implements SlimefunAddon {
         new CobblestoneGenerator(CobblestoneGenerator.Tier.THREE) {
             @Override
             public int getEnergyConsumption() {
-                return 240;
+                return 192;
             }
 
             @Override

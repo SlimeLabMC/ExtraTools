@@ -59,7 +59,7 @@ public final class ETItems {
         LoreBuilder.machine(MachineTier.ADVANCED, MachineType.MACHINE),
             "&8\u21E8 &7速度: 1x",
         LoreBuilder.powerBuffer(256),
-        LoreBuilder.powerPerSecond(50)
+        LoreBuilder.powerPerSecond(60)
     );
 
     public static final SlimefunItemStack COBBLESTONE_GENERATOR_2 = new SlimefunItemStack("COBBLESTONE_GENERATOR_2",
@@ -69,7 +69,7 @@ public final class ETItems {
         LoreBuilder.machine(MachineTier.ADVANCED, MachineType.MACHINE),
             "&8\u21E8 &7速度: 2x",
         LoreBuilder.powerBuffer(512),
-        LoreBuilder.powerPerSecond(108)
+        LoreBuilder.powerPerSecond(100)
     );
 
     public static final SlimefunItemStack COBBLESTONE_GENERATOR_3 = new SlimefunItemStack("COBBLESTONE_GENERATOR_3",
@@ -79,7 +79,7 @@ public final class ETItems {
         LoreBuilder.machine(MachineTier.END_GAME, MachineType.MACHINE),
             "&8\u21E8 &7速度: 4x",
         LoreBuilder.powerBuffer(1024),
-        LoreBuilder.powerPerSecond(240)
+        LoreBuilder.powerPerSecond(192)
     );
 
     public static final SlimefunItemStack VAPORIZER = new SlimefunItemStack("VAPORIZER",
